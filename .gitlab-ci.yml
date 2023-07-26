@@ -1,0 +1,25 @@
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  image: node:lts
+  variables:
+    VITE_COMMIT_SHA: $CI_COMMIT_SHA
+  script:
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+
+deploy:
+  image:
+    name: amazon/aws-cli
+    entrypoint: [""]
+  stage: deploy
+  script:
+    - aws s3 sync dist/. s3://$AWS_S3_BUCKET_NAME
+
+

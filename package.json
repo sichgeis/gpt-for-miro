@@ -1,0 +1,26 @@
+{
+  "name": "open-miro-gpt",
+  "version": "latest",
+  "license": "MIT",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "languagedetect": "^2.0.0",
+    "localforage": "^1.10.0",
+    "mirotone": "5.1.0",
+    "openai": "^3.3.0",
+    "uuid": "^9.0.0",
+    "vue": "3.3.4"
+  },
+  "devDependencies": {
+    "@mirohq/websdk-types": "2.9.0",
+    "@types/uuid": "^9.0.2",
+    "@vitejs/plugin-vue": "4.2.3",
+    "typescript": "5.1.6",
+    "vite": "4.4.7"
+  }
+}
