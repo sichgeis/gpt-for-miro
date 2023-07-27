@@ -123,8 +123,8 @@
                 </label>
             </div>
             <div class="cs1 ce12 grid">
-                <h4 class="cs1 ce12">Signature Emoji</h4>
-                <input class="cs1 ce3 input" type="text" :value="signatureEmoji" @blur="setSignatureEmoji"/>
+                <h4 class="cs1 ce12">OpenAI API Key</h4>
+                <input class="cs1 ce12 input" type="text" :value="openaiApiKey" @blur="setOpenaiApiKey"/>
             </div>
             <div class="cs1 ce12 grid">
                 <h4 class="cs1 ce12">Temperature</h4>
@@ -132,7 +132,7 @@
                        @blur="setTemperature"/>
             </div>
             <div class="cs1 ce12">
-                <h4>Verison of Language Model</h4>
+                <h4>Version of Language Model</h4>
                 <label class="radiobutton">
                     <input type="radio" name="model-radio" :checked="modelVersion === 'gpt-3.5-turbo'"
                            @click="switchModelVersion('gpt-3.5-turbo')">
@@ -156,7 +156,7 @@
                     <div class="load-item" v-for="completion in savedCompletions" :key="completion.id">
                         <div class="p-small">{{ ago(new Date(completion.timestamp)) }}</div>
                         <a class="load-link p-medium" @click="loadCompletion(completion)">
-                            {{ completion.name }}
+                            💬 {{ completion.name }}
                         </a>
                         <div v-if="completion.id === completionId">
                         </div>
@@ -217,10 +217,10 @@ import {StickyNote} from "@mirohq/websdk-types";
 import {ago, stripHtmlString} from "./utils";
 import {getCompletions, logCompletion} from "./storage";
 
-const signatureEmoji = ref('');
+const openaiApiKey = ref('Insert your OpenAi API Key');
 const saveDisabled = ref(true);
-const saveButtonText = ref('');
-const completeButtonText = ref('🤜 Run Miro-GPT');
+const saveButtonText = ref('📌 Save');
+const completeButtonText = ref('🚀 Run Miro-GPT');
 const completeDisabled = computed(() => {
     return selectedStickyNotes.value.length === 0;
 })
@@ -252,27 +252,14 @@ const items = computed(() => {
 const temperature = ref(0.7);
 const gitCommitHash = import.meta.env.VITE_COMMIT_SHA;
 
-let colorfulEmojis = ["🌈", "🎉", "🤖", "🌴", "🦧", "🕶️", "👒", "🎈", "🎊", "🏮", "🎨", "🍭", "🍬", "🍫", "🍿", "🍩", "🍪", "🎂", "🍰", "🧁", "🍦", "🍧", "🍨", "🍓", "🍎", "🥦", "🍄", "🍅", "🍇", "🌽", "🌶️", "🍋", "🍌", "🍉", "🍈", "🍒", "🍍", "🥭", "🥥", "🥝", "🍅", "🥑", "🍇", "🍈", "🍉", "🍋", "🍌"];
-
-const getRandomEmoji = () => {
-    let randomIndex = Math.floor(Math.random() * colorfulEmojis.length);
-    return colorfulEmojis[randomIndex];
-}
-
-const isEmoji = (str: string) => {
-    const emojiRegexp = /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}\p{Script=Hangul}\p{Emoji}]/gu;
-    return emojiRegexp.test(str);
-}
-
-const setSignatureEmoji = (e: Event) => {
-    if (!isEmoji(e.target.value)) return;
-    localStorage.signatureEmoji = e.target.value;
-    signatureEmoji.value = e.target.value;
-}
-
 const setTemperature = (e: Event) => {
     localStorage.temperature = parseFloat(e.target.value);
     temperature.value = parseFloat(e.target.value);
+}
+
+const setOpenaiApiKey = (e: Event) => {
+    localStorage.openaiApiKey = e.target.value;
+    openaiApiKey.value = e.target.value;
 }
 
 const updateSelectedItems = async () => {
@@ -301,9 +288,16 @@ const complete = async () => {
     let currentPrompt = prompt.value;
     let content;
     try {
-        content = await createCompletion(currentPrompt, parseFloat(temperature.value), modelVersion.value);
+        content = await createCompletion(openaiApiKey.value, currentPrompt, parseFloat(temperature.value), modelVersion.value);
     } catch (e) {
-        content = 'error in communication with LLM: ' + e.toString();
+        console.log('error', e);
+        if (e.toString().includes('401')) {
+            content = 'Authentication error with OpenAI. Have you provided a valid API key for OpenAI in the settings tab?';
+        } else if (e.toString().includes('404') && modelVersion.value === 'gpt-4') {
+            content = 'You seem to have no access to the OpenAI GPT-4 model. Upgrade your OpenAI subscription to use GPT-4 or switch to GPT-3.5 in the settings tab.';
+        } else {
+            content = 'Error in communication with OpenAI. ' + e.toString();
+        }
     }
     try {
         const contentJson = JSON.parse(content);
@@ -329,24 +323,23 @@ const complete = async () => {
             x: selectionCenterX,
             y: selectionCenterY + (selectionHeight / 2) + (0.9 * resultStickyNoteHeight) + 0.5 * resultStickyNoteHeight
         });
-        completeButtonText.value = '🤜 Run Miro-GPT';
+        completeButtonText.value = '🚀 Run Miro-GPT';
     }
 
-    completeButtonText.value = '🤜 Run Miro-GPT';
+    completeButtonText.value = '🚀 Run Miro-GPT';
     cacheCompletion(currentPrompt, content, instruction.value);
 };
 
 const saveLatestCompletion = async () => {
     saveButtonText.value = '🤸 Saving ...';
     const name = localStorage.lastCompletionName;
-    const emojiName = signatureEmoji.value + ' ' + name;
-    logCompletion(emojiName, localStorage.lastPrompt, localStorage.lastContent, localStorage.lastInstruction, localStorage.lastPromptLanguage);
+    logCompletion(name, localStorage.lastPrompt, localStorage.lastContent, localStorage.lastInstruction, localStorage.lastPromptLanguage);
     saveButtonText.value = `✅ Saved: ${name}`;
     saveDisabled.value = true;
 }
 
 const cacheCompletion = async (prompt: string, content: any, instruction: string) => {
-    const name = await createNameForSavedInstruction(instruction);
+    const name = await createNameForSavedInstruction(openaiApiKey.value, instruction);
 
     localStorage.lastInstruction = instruction;
     localStorage.lastPrompt = prompt;
@@ -354,9 +347,10 @@ const cacheCompletion = async (prompt: string, content: any, instruction: string
     localStorage.lastPromptLanguage = promptLanguage.value;
     localStorage.lastCompletionName = name;
 
-    saveButtonText.value = signatureEmoji.value + ` Save: ${name}`;
+    saveButtonText.value = `📌 Save: ${name}`;
     saveDisabled.value = false;
 }
+
 const switchPromptLanguage = (lang: 'en' | 'de') => {
     promptLanguage.value = lang;
     localStorage.promptLanguage = lang;
@@ -396,14 +390,8 @@ onMounted(async () => {
     if (localStorage.modelVersion) {
         modelVersion.value = localStorage.modelVersion;
     }
-    if (localStorage.signatureEmoji) {
-        signatureEmoji.value = localStorage.signatureEmoji;
-        saveButtonText.value = localStorage.signatureEmoji + ' Save';
-    } else {
-        signatureEmoji.value = getRandomEmoji();
-        localStorage.signatureEmoji = signatureEmoji.value;
-        saveButtonText.value = localStorage.signatureEmoji + ' Save';
-
+    if (localStorage.modelVersion) {
+        modelVersion.value = localStorage.modelVersion;
     }
 });
 

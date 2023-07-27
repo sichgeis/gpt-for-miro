@@ -2,9 +2,9 @@ import {Configuration, OpenAIApi} from 'openai';
 
 
 export type GptModel = 'gpt-3.5-turbo' | 'gpt-3.5-turbo-16k' | 'gpt-4';
-const createCompletion = async (prompt: string, temperature: number, modelVersion: GptModel) => {
+const createCompletion = async (openaiApiKey: string, prompt: string, temperature: number, modelVersion: GptModel) => {
     const configuration = new Configuration({
-        apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+        apiKey: openaiApiKey,
     });
     const openai = new OpenAIApi(configuration);
 
@@ -28,9 +28,9 @@ const createCompletion = async (prompt: string, temperature: number, modelVersio
     return content;
 };
 
-const createNameForSavedInstruction = async (instruction: string) => {
+const createNameForSavedInstruction = async (openaiApiKey: string, instruction: string) => {
     const prompt = 'Summarize the following instruction. Answer with a maximum of 5 words. You answer is used as a title of this instruction.\n\n```\n' + instruction + '\n```\n';
-    return createCompletion(prompt, 0, 'gpt-3.5-turbo');
+    return createCompletion(openaiApiKey, prompt, 0, 'gpt-3.5-turbo');
 };
 
 export {createCompletion, createNameForSavedInstruction};
