@@ -116,14 +116,14 @@
             <div class="cs1 ce12">
                 <h4 class="radio-label">Language of Stickies and Prompt</h4>
                 <label class="radiobutton">
-                    <input type="radio" name="lang-radio" :checked="promptLanguage === 'de'"
-                           @click="switchPromptLanguage('de')">
-                    <span>Deutsch</span>
-                </label>
-                <label class="radiobutton">
                     <input type="radio" name="lang-radio" :checked="promptLanguage === 'en'"
                            @click="switchPromptLanguage( 'en')">
                     <span>English</span>
+                </label>
+                <label class="radiobutton">
+                    <input type="radio" name="lang-radio" :checked="promptLanguage === 'de'"
+                           @click="switchPromptLanguage('de')">
+                    <span>Deutsch</span>
                 </label>
             </div>
             <div class="cs1 ce12 grid">
@@ -148,6 +148,12 @@
                            @click="switchModelVersion( 'gpt-4')">
                     <span>gpt-4 (slow, 8k token context)</span>
                 </label>
+            </div>
+            <div class="cs1 ce12 grid">
+                <button type="button" class="cs1 ce12 button button-secondary no-overflow"
+                        @click="clearLocalStorage()">
+                    Reset Miro-GPT (clear browser cache)
+                </button>
             </div>
         </div>
         <div v-if="currentTab === 'load'" class="cs1 ce12">
@@ -201,7 +207,7 @@
                     Reference to open-source code.
                 </a>
                 <a class="load-link p-medium" target="_blank" href="https://example.com">
-                    {{ gitCommitHash }}
+                    TODO XXX
                 </a>
             </div>
         </div>
@@ -210,7 +216,7 @@
 
 <script setup lang="ts">
 import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue';
-import {createCompletion, createNameForSavedInstruction, GptModel} from "./openai";
+import {createCompletion, createNameForSavedInstruction, GptModel, isGpt4Available} from "./openai";
 import {lang} from "./lang";
 import {addSticky, getCenterOfGravity, getHeight} from "./miro";
 import {StickyNote} from "@mirohq/websdk-types";
@@ -250,16 +256,30 @@ const items = computed(() => {
     }, '');
 });
 const temperature = ref(0.7);
-const gitCommitHash = import.meta.env.VITE_COMMIT_SHA;
+const gpt4Available = ref(false);
 
 const setTemperature = (e: Event) => {
     localStorage.temperature = parseFloat(e.target.value);
     temperature.value = parseFloat(e.target.value);
 }
 
-const setOpenaiApiKey = (e: Event) => {
+const setOpenaiApiKey = async (e: Event) => {
     localStorage.openaiApiKey = e.target.value;
     openaiApiKey.value = e.target.value;
+    try {
+        if (await isGpt4Available(openaiApiKey.value)) {
+            localStorage.gpt4Available = 'true';
+            gpt4Available.value = true;
+        } else {
+            localStorage.removeItem("gpt4Available");
+            gpt4Available.value = false;
+            if (modelVersion.value === 'gpt-4') {
+                modelVersion.value = 'gpt-3.5-turbo';
+            }
+        }
+    } catch (e) {
+        openaiApiKey.value = '❗️  Invalid OpenAI API Key';
+    }
 }
 
 const updateSelectedItems = async () => {
@@ -284,6 +304,8 @@ const complete = async () => {
             content = 'Authentication error with OpenAI. Have you provided a valid API key for OpenAI in the settings tab?';
         } else if (e.toString().includes('404') && modelVersion.value === 'gpt-4') {
             content = 'You seem to have no access to the OpenAI GPT-4 model. Upgrade your OpenAI subscription to use GPT-4 or switch to GPT-3.5 in the settings tab.';
+        } else if (e.toString().includes('setRequestHeader')) {
+            content = 'Error in communication with OpenAI. Have you provided a valid API key in the settings tab?.';
         } else {
             content = 'Error in communication with OpenAI. ' + e.toString();
         }
@@ -371,21 +393,20 @@ onMounted(async () => {
     if (localStorage.modelVersion) {
         modelVersion.value = localStorage.modelVersion;
     }
+    if (localStorage.gpt4Available) {
+        gpt4Available.value = true;
+    }
     if (localStorage.openaiApiKey) {
         openaiApiKey.value = localStorage.openaiApiKey;
     } else {
-        await miro.board.ui.openModal({
-            url: 'modal.html',
-            width: 800,
-            height: 680,
-            fullscreen: false,
-        });
+        currentTab.value = 'settings';
     }
 });
 
-const gpt4Available = computed(() => {
-    return !!localStorage.gpt4Available;
-})
+const clearLocalStorage = async () => {
+    localStorage.clear();
+    miro.board.ui.closePanel();
+}
 
 onBeforeUnmount(() => {
     miro.board.ui.off('selection:update', updateSelectedItems);

@@ -1,14 +1,27 @@
 import {Configuration, OpenAIApi} from 'openai';
 
-
 export type GptModel = 'gpt-3.5-turbo' | 'gpt-3.5-turbo-16k' | 'gpt-4';
-const createCompletion = async (openaiApiKey: string, prompt: string, temperature: number, modelVersion: GptModel) => {
+
+function openAIApi(openaiApiKey: string) {
     const configuration = new Configuration({
         apiKey: openaiApiKey,
     });
-    const openai = new OpenAIApi(configuration);
+    delete configuration.baseOptions.headers['User-Agent'];
+    return new OpenAIApi(configuration);
+}
 
-    const completion = await openai.createChatCompletion({
+const listModels = async (apiKey: string) => {
+    const response = await openAIApi(apiKey).listModels();
+
+    return response.data.data.map((item) => item.id);
+}
+
+const isGpt4Available = async (openaiApiKey: string) => {
+    return (await listModels(openaiApiKey)).includes('gpt-4');
+}
+
+const createCompletion = async (apiKey: string, prompt: string, temperature: number, modelVersion: GptModel) => {
+    const completion = await openAIApi(apiKey).createChatCompletion({
         model: modelVersion,
         messages: [{role: 'user', content: prompt}],
         max_tokens: 2000,
@@ -28,9 +41,9 @@ const createCompletion = async (openaiApiKey: string, prompt: string, temperatur
     return content;
 };
 
-const createNameForSavedInstruction = async (openaiApiKey: string, instruction: string) => {
+const createNameForSavedInstruction = async (apiKey: string, instruction: string) => {
     const prompt = 'Summarize the following instruction. Answer with a maximum of 5 words. You answer is used as a title of this instruction.\n\n```\n' + instruction + '\n```\n';
-    return createCompletion(openaiApiKey, prompt, 0, 'gpt-3.5-turbo');
+    return createCompletion(apiKey, prompt, 0, 'gpt-3.5-turbo');
 };
 
-export {createCompletion, createNameForSavedInstruction};
+export {listModels, isGpt4Available, createCompletion, createNameForSavedInstruction};
