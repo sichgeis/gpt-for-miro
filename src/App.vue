@@ -59,6 +59,10 @@
                     {{ saveButtonText }}
                 </button>
             </div>
+            <div class="cs1 ce12 p-small build-by-orbit">
+                Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
+                Ventures</a>
+            </div>
 
         </div>
         <div v-if="currentTab === 'selectedItems'" class="cs1 ce12 grid">
@@ -76,7 +80,12 @@
                     </div>
                 </div>
             </div>
+            <div class="cs1 ce12 p-small build-by-orbit">
+                Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
+                Ventures</a>
+            </div>
         </div>
+
         <div v-if="currentTab === 'prompt'" class="cs1 ce12 grid scrollable">
             <div class="cs1 ce12">
                 <p class="p-small">
@@ -107,7 +116,12 @@
                     {{ saveButtonText }}
                 </button>
             </div>
+            <div class="cs1 ce12 p-small build-by-orbit">
+                Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
+                Ventures</a>
+            </div>
         </div>
+
         <div v-if="currentTab === 'settings'" class="cs1 ce12 grid scrollable">
             <div class="cs1 ce12 grid">
                 <h4 class="cs1 ce12 input-label">OpenAI API Key</h4>
@@ -143,19 +157,25 @@
                            @click="switchModelVersion('gpt-3.5-turbo-16k')">
                     <span>gpt-3.5-turbo-16k (16k token context)</span>
                 </label>
-                <label v-if="gpt4Available" class="radiobutton">
+                <label class="radiobutton">
                     <input type="radio" name="model-radio" :checked="modelVersion === 'gpt-4'"
+                           :disabled="!gpt4Available"
                            @click="switchModelVersion( 'gpt-4')">
                     <span>gpt-4 (slow, 8k token context)</span>
                 </label>
             </div>
             <div class="cs1 ce12 grid">
-                <button type="button" class="cs1 ce12 button button-secondary no-overflow"
+                <button type="button" class="cs1 ce12 button button-danger no-overflow"
                         @click="clearLocalStorage()">
-                    Reset Miro-GPT (clear browser cache)
+                    Reset GPT for Miro (clear browser cache)
                 </button>
             </div>
+            <div class="cs1 ce12 p-small build-by-orbit">
+                Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
+                Ventures</a>
+            </div>
         </div>
+
         <div v-if="currentTab === 'load'" class="cs1 ce12">
             <div class="cs1 ce12">
                 <div class="scrollable mid-height">
@@ -182,21 +202,26 @@
                 ></textarea>
             </div>
             <div class="cs1 ce12 grid">
-                <button type="button" class="cs1 ce12 button button-primary" :disabled="completeDisabled"
+                <button type="button" class="cs1 ce12 button button-primary load-instruction-button" :disabled="completeDisabled"
                         @click="complete()">
                     {{ completeDisabled ? '🚨 No sticky notes selected' : completeButtonText }}
                 </button>
             </div>
+            <div class="cs1 ce12 p-small build-by-orbit">
+                Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
+                Ventures</a>
+            </div>
         </div>
+
         <div v-if="currentTab === 'feedback'" class="cs1 ce12">
             <div class="cs1 ce12">
                 <h4>TODO XXX Quick Start Guide</h4>
                 <a class="load-link p-medium" target="_blank" href="https://example.com">
-                    Miro Board "Quickstart Miro-GPT"
+                    Miro Board "Quickstart GPT for Miro"
                 </a>
                 <h4>TODO XXX Feature Requests und Feedback</h4>
                 <a class="load-link p-medium" target="_blank" href="https://example.com">
-                    Miro Board "Feedback Miro-GPT"
+                    Miro Board "Feedback GPT for Miro"
                 </a>
                 <h4>TODO XXX Contact</h4>
                 <a class="load-link p-medium" target="_blank" href="https://example.com">
@@ -226,7 +251,7 @@ import {getCompletions, logCompletion} from "./storage";
 const openaiApiKey = ref('❗️  Insert your OpenAI API Key here');
 const saveDisabled = ref(true);
 const saveButtonText = ref('📌 Save');
-const completeButtonText = ref('🚀 Run Miro-GPT');
+const completeButtonText = ref('🚀 Run GPT for Miro');
 const completeDisabled = computed(() => {
     return selectedStickyNotes.value.length === 0;
 })
@@ -329,7 +354,7 @@ const complete = async () => {
         });
     }
 
-    completeButtonText.value = '🚀 Run Miro-GPT';
+    completeButtonText.value = '🚀 Run GPT for Miro';
     cacheCompletion(currentPrompt, content, instruction.value);
 };
 
@@ -416,11 +441,11 @@ onBeforeUnmount(() => {
 
 <style>
 .mid-height {
-    height: calc(100vh - 320px);
+    height: calc(100vh - 330px);
 }
 
 .full-height {
-    height: calc(100vh - 200px);
+    height: calc(100vh - 218px);
 }
 
 .scrollable {
@@ -446,15 +471,49 @@ onBeforeUnmount(() => {
     margin-bottom: 1rem;
 }
 
+.load-instruction-button {
+    margin-bottom: 0.82rem !important;
+}
+
 .second-tab-bar {
     margin-top: -0.6rem;
 }
 
 .input-label {
     margin-bottom: 0.2rem;
+    margin-top: 1rem;
 }
 
 .radio-label {
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.83rem;
+    margin-top: 1rem;
+}
+
+.build-by-orbit {
+    margin-top: 0;
+    text-align: right;
+
+    & > a:link {
+        color: #4f4f4f;
+        font-weight: 600;
+    }
+
+    /* visited link */
+
+    & > a:visited {
+        color: #4f4f4f;
+    }
+
+    /* mouse over link */
+
+    & > a:hover {
+        color: black;
+    }
+
+    /* selected link */
+
+    & > a:active {
+        color: black;
+    }
 }
 </style>

@@ -1,4 +1,4 @@
-## Open Miro-GPT
+## Open GPT for Miro
 
 **&nbsp;ℹ&nbsp;Note**:
 
