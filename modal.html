@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="robots" content="noindex, nofollow">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="/src/assets/style.css"/>
+    <script src="https://miro.com/app/static/sdk/v2/miro.js"></script>
+    <title>Open Miro GPT</title>
+</head>
+<body>
+<div class="grid container scrollable">
+    <div class="cs1 ce12">
+        <h1>open Miro-GPT</h1>
+        <p>
+            Bring Chat-GPT to your Miro board.
+        </p>
+        <p>
+            Select stickies and give an instruction what to do with them.
+            Miro-GPT then replies with stickies that you can directly use on your board.
+        </p>
+    </div>
+    <div class="cs1 ce12 grid">
+        <label class="cs1 ce12 p-medium" for="openai-api-key">Please enter your OpenAI API key:</label>
+        <div class="cs1 ce12 grid">
+            <input class="cs1 ce9 input" type="text" placeholder="sk-42c3po1337..." id="openai-api-key"
+                   name="openai-api-key"/>
+            <a class="cs10 ce12 button button-primary" id="openai-api-key-button">
+                Let's go!
+            </a>
+        </div>
+        <div class="cs1 ce12 error-text p-medium" id="openai-api-key-error"> </div>
+    </div>
+    <div class="cs1 ce12">
+        <p class="p-medium">
+            To obtain an OpenAI API key, head over to <a class="muted" href="https://platform.openai.com"
+                                                         target="_blank">platform.openai.com</a> and sign up for an
+            account, if you don't already have one.
+            Navigate to the <a class="muted" href="https://platform.openai.com/account/api-keys" target="_blank">API
+            keys section</a> to create a new key. Return here and insert the API key in the field above to start using
+            Miro-GPT.
+        </p>
+        <p class="p-medium">
+            The App stores the api key exclusively in your browser. Your api key is not shared with anyone.
+        </p>
+        <p class="p-small build-with-love">
+            Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
+            Ventures</a>
+        </p>
+    </div>
+</div>
+<script type="module" src="modal.js"></script>
+</body>
+</html>

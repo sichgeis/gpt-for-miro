@@ -24,9 +24,14 @@ body {
 }
 
 .container {
+  color: white;
+  background-image: url("Office_ORBIT_web.webp");
+  background-size: cover;
+  height: 100%;
   max-width: 580px;
   margin: 0 auto;
-  background-color: var(--indigo50);
+  background-color: black;
+  background-position: center;
   padding: var(--space-xxxlarge);
   border-radius: var(--border-radius-xlarge);
 }
@@ -37,4 +42,40 @@ img {
 
 .button {
   text-decoration: none;
+}
+
+.error-text {
+  color: #ff9d9d;
+}
+
+.success-text {
+  color: #d6ff9d;
+}
+
+a:link.muted {
+  color: lightgray;
+}
+
+/* visited link */
+a:visited.muted {
+  color: lightgray;
+}
+
+/* mouse over link */
+a:hover.muted {
+  color: white;
+}
+
+/* selected link */
+a:active.muted {
+  color: white;
+}
+
+.build-with-love {
+  margin-top: 2rem;
+  text-align: right;
+}
+
+.scrollable {
+  overflow-y: auto;
 }

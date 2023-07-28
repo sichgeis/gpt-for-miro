@@ -1,5 +1,3 @@
-import LanguageDetect from "languagedetect";
-
 const lang = {
   de: {
     identity: 'Du bist das Backend eines Plugins für Miro.',
@@ -21,9 +19,4 @@ const lang = {
   },
 };
 
-const isEnglish = (str: string) => {
-  const lngDetector = new LanguageDetect();
-  return lngDetector.detect(str, 3).some(([language, _score]) => language === 'english');
-}
-
-export {lang, isEnglish};
+export {lang};

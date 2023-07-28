@@ -109,8 +109,12 @@
             </div>
         </div>
         <div v-if="currentTab === 'settings'" class="cs1 ce12 grid scrollable">
+            <div class="cs1 ce12 grid">
+                <h4 class="cs1 ce12 input-label">OpenAI API Key</h4>
+                <input class="cs1 ce12 input" type="text" :value="openaiApiKey" @blur="setOpenaiApiKey"/>
+            </div>
             <div class="cs1 ce12">
-                <h4>Language of Stickies and Prompt</h4>
+                <h4 class="radio-label">Language of Stickies and Prompt</h4>
                 <label class="radiobutton">
                     <input type="radio" name="lang-radio" :checked="promptLanguage === 'de'"
                            @click="switchPromptLanguage('de')">
@@ -123,16 +127,12 @@
                 </label>
             </div>
             <div class="cs1 ce12 grid">
-                <h4 class="cs1 ce12">OpenAI API Key</h4>
-                <input class="cs1 ce12 input" type="text" :value="openaiApiKey" @blur="setOpenaiApiKey"/>
-            </div>
-            <div class="cs1 ce12 grid">
-                <h4 class="cs1 ce12">Temperature</h4>
+                <h4 class="cs1 ce12 input-label">Temperature</h4>
                 <input class="cs1 ce3 input" type="number" min="0" max="1" step=".1" :value="temperature"
                        @blur="setTemperature"/>
             </div>
             <div class="cs1 ce12">
-                <h4>Version of Language Model</h4>
+                <h4 class="radio-label">Version of Language Model</h4>
                 <label class="radiobutton">
                     <input type="radio" name="model-radio" :checked="modelVersion === 'gpt-3.5-turbo'"
                            @click="switchModelVersion('gpt-3.5-turbo')">
@@ -143,7 +143,7 @@
                            @click="switchModelVersion('gpt-3.5-turbo-16k')">
                     <span>gpt-3.5-turbo-16k (16k token context)</span>
                 </label>
-                <label class="radiobutton">
+                <label v-if="gpt4Available" class="radiobutton">
                     <input type="radio" name="model-radio" :checked="modelVersion === 'gpt-4'"
                            @click="switchModelVersion( 'gpt-4')">
                     <span>gpt-4 (slow, 8k token context)</span>
@@ -209,15 +209,15 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
+import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 import {createCompletion, createNameForSavedInstruction, GptModel} from "./openai";
-import {lang, isEnglish} from "./lang";
+import {lang} from "./lang";
 import {addSticky, getCenterOfGravity, getHeight} from "./miro";
 import {StickyNote} from "@mirohq/websdk-types";
 import {ago, stripHtmlString} from "./utils";
 import {getCompletions, logCompletion} from "./storage";
 
-const openaiApiKey = ref('Insert your OpenAi API Key');
+const openaiApiKey = ref('❗️  Insert your OpenAI API Key here');
 const saveDisabled = ref(true);
 const saveButtonText = ref('📌 Save');
 const completeButtonText = ref('🚀 Run Miro-GPT');
@@ -267,17 +267,6 @@ const updateSelectedItems = async () => {
     selectedStickyNotes.value = selectedItems.filter((item) => item.type === 'sticky_note') as StickyNote[]
 }
 
-const languagesAreCompatible = () => {
-    const items = selectedStickyNotes.value.map(item => item.content).reduce((acc: string, content) => {
-        return acc + '\n' + '* ' + stripHtmlString(content);
-    }, '');
-    const itemsIsEnglish = isEnglish(items);
-    const instructionIsEnglish = isEnglish(instruction.value);
-
-    return promptLanguage.value === 'en' && itemsIsEnglish && instructionIsEnglish
-        || promptLanguage.value === 'de' && !itemsIsEnglish && !itemsIsEnglish
-}
-
 const complete = async () => {
 
     completeButtonText.value = '🤖 Waiting for the machine ...';
@@ -316,14 +305,6 @@ const complete = async () => {
             x: selectionCenterX,
             y: selectionCenterY + (selectionHeight / 2) + (0.9 * resultStickyNoteHeight)
         });
-    }
-
-    if (!languagesAreCompatible()) {
-        addSticky(lang[promptLanguage.value].langWarning, resultStickyNoteHeight, {
-            x: selectionCenterX,
-            y: selectionCenterY + (selectionHeight / 2) + (0.9 * resultStickyNoteHeight) + 0.5 * resultStickyNoteHeight
-        });
-        completeButtonText.value = '🚀 Run Miro-GPT';
     }
 
     completeButtonText.value = '🚀 Run Miro-GPT';
@@ -376,7 +357,7 @@ const loadCompletion = async (completion: any) => {
 
 onMounted(async () => {
     miro.board.ui.on('selection:update', updateSelectedItems);
-    updateSelectedItems();
+    await updateSelectedItems();
 
     if (localStorage.promptLanguage) {
         promptLanguage.value = localStorage.promptLanguage;
@@ -390,10 +371,21 @@ onMounted(async () => {
     if (localStorage.modelVersion) {
         modelVersion.value = localStorage.modelVersion;
     }
-    if (localStorage.modelVersion) {
-        modelVersion.value = localStorage.modelVersion;
+    if (localStorage.openaiApiKey) {
+        openaiApiKey.value = localStorage.openaiApiKey;
+    } else {
+        await miro.board.ui.openModal({
+            url: 'modal.html',
+            width: 800,
+            height: 680,
+            fullscreen: false,
+        });
     }
 });
+
+const gpt4Available = computed(() => {
+    return !!localStorage.gpt4Available;
+})
 
 onBeforeUnmount(() => {
     miro.board.ui.off('selection:update', updateSelectedItems);
@@ -435,5 +427,13 @@ onBeforeUnmount(() => {
 
 .second-tab-bar {
     margin-top: -0.6rem;
+}
+
+.input-label {
+    margin-bottom: 0.2rem;
+}
+
+.radio-label {
+    margin-bottom: 0.7rem;
 }
 </style>
