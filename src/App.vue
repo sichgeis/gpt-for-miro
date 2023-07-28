@@ -215,7 +215,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue';
+import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
 import {createCompletion, createNameForSavedInstruction, GptModel, isGpt4Available} from "./openai";
 import {lang} from "./lang";
 import {addSticky, getCenterOfGravity, getHeight} from "./miro";
@@ -259,13 +259,13 @@ const temperature = ref(0.7);
 const gpt4Available = ref(false);
 
 const setTemperature = (e: Event) => {
-    localStorage.temperature = parseFloat(e.target.value);
-    temperature.value = parseFloat(e.target.value);
+    localStorage.temperature = parseFloat((e.target as HTMLInputElement).value);
+    temperature.value = parseFloat((e.target as HTMLInputElement).value);
 }
 
 const setOpenaiApiKey = async (e: Event) => {
-    localStorage.openaiApiKey = e.target.value;
-    openaiApiKey.value = e.target.value;
+    localStorage.openaiApiKey = (e.target as HTMLInputElement).value;
+    openaiApiKey.value = (e.target as HTMLInputElement).value;
     try {
         if (await isGpt4Available(openaiApiKey.value)) {
             localStorage.gpt4Available = 'true';
@@ -297,7 +297,7 @@ const complete = async () => {
     let currentPrompt = prompt.value;
     let content;
     try {
-        content = await createCompletion(openaiApiKey.value, currentPrompt, parseFloat(temperature.value), modelVersion.value);
+        content = await createCompletion(openaiApiKey.value, currentPrompt, temperature.value, modelVersion.value);
     } catch (e) {
         console.log('error', e);
         if (e.toString().includes('401')) {

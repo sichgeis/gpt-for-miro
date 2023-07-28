@@ -66,7 +66,14 @@ const addSticky = (content: string, height: number, position: { x: number, y: nu
 }
 
 const projectLocalToGlobalCoord = async (frame: FrameProps | undefined, coord: StickyNoteProps) => {
-    if (!frame || frame.x === undefined || frame.width === undefined || frame.y === undefined || frame.height === undefined) {
+    if (!frame
+        || frame.x === undefined
+        || frame.width === undefined
+        || frame.y === undefined
+        || frame.height === undefined
+        || coord.x === undefined
+        || coord.y === undefined
+    ) {
         return coord;
     } else {
         return {

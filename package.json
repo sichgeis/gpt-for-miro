@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "@mirohq/websdk-types": "2.9.0",
+    "@types/node": "^20.4.5",
     "@types/uuid": "^9.0.2",
     "@vitejs/plugin-vue": "4.2.3",
     "typescript": "5.1.6",
