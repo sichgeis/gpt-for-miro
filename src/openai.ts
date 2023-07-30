@@ -42,7 +42,7 @@ const createCompletion = async (apiKey: string, prompt: string, temperature: num
 };
 
 const createNameForSavedInstruction = async (apiKey: string, instruction: string) => {
-    const prompt = 'Summarize the following instruction. Answer with a maximum of 5 words. You answer is used as a title of this instruction.\n\n```\n' + instruction + '\n```\n';
+    const prompt = 'Summarize the following instruction. Answer with an emoji and a maximum of 4 words. You answer is used as a title of this instruction.\n\n```\n' + instruction + '\n```\n';
     return createCompletion(apiKey, prompt, 0, 'gpt-3.5-turbo');
 };
 
