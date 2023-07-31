@@ -241,8 +241,12 @@
                 </a>
                 <h4>Source Code</h4>
                 <a class="load-link p-medium" target="_blank" href="https://github.com/sichgeis/gpt-for-miro">
-                    Github link
+                    Open GPT for Miro on Github
                 </a>
+                <br>
+                <p class="p-medium">
+                    Version: {{ gitCommitHash.substring(0,7) }}
+                </p>
             </div>
         </div>
     </div>
@@ -290,6 +294,7 @@ const items = computed(() => {
     }, '');
 });
 const temperature = ref(0.7);
+const gitCommitHash = import.meta.env.VITE_COMMIT_SHA;
 const gpt4Available = ref(false);
 
 const setTemperature = (e: Event) => {
