@@ -220,22 +220,18 @@
                    href="https://drive.google.com/file/d/15eKkrzqESZNXgShgR51wZ4BseErl-Ijh/view">
                     ☝️ Introduction to "GPT for Miro"
                 </a>
-                <br>
                 <a class="load-link p-medium" target="_blank"
                    href="https://drive.google.com/file/d/1vT4Qynikx50X2KV2riU-K3Ug-6JbTK08/view">
                     🇪🇸 Translate a sticky-note
                 </a>
-                <br>
                 <a class="load-link p-medium" target="_blank"
                    href="https://drive.google.com/file/d/1MJJf7UNkMfz_Jj34nWx5ATMGofmdZpLf/view">
                     📌 Saving and loading instructions
                 </a>
-                <br>
                 <a class="load-link p-medium" target="_blank"
                    href="https://drive.google.com/file/d/1Qov7GclUkzmXvGeNQY_FN-42-ICEZycK/view">
                     💡 Identify main ideas
                 </a>
-                <br>
                 <a class="load-link p-medium" target="_blank"
                    href="https://drive.google.com/file/d/1wPZGb6gH8-bfKbXHb5TzUIEKG6ix0U13/view">
                     🌈 Reference color of the sticky
@@ -248,7 +244,6 @@
                 <a class="load-link p-medium" target="_blank" href="https://github.com/sichgeis/gpt-for-miro">
                     Open GPT for Miro on Github
                 </a>
-                <br>
                 <p class="p-medium">
                     Version: {{ gitCommitHash.substring(0, 7) }}
                 </p>
@@ -257,12 +252,10 @@
                    href="https://orbitdigital.de/">
                     Orbit - delivering impact together
                 </a>
-                <br>
                 <a class="load-link p-medium" target="_blank"
                    href="https://techsnack.orbitdigital.de/">
                     Techsnack: our tech blog
                 </a>
-                <br>
                 <a class="load-link p-medium" target="_blank"
                    href="https://orbitdigital.de/career">
                     We are hiring 😉
@@ -528,6 +521,9 @@ onBeforeUnmount(() => {
 .load-link {
     text-decoration: underline;
     cursor: pointer;
+    display: block;
+    margin-top: 0.4rem;
+    margin-bottom: 0;
 }
 
 .no-overflow {
@@ -587,7 +583,7 @@ onBeforeUnmount(() => {
 }
 
 .feedback-heading {
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.8rem;
     margin-top: 2rem;
 }
 </style>
