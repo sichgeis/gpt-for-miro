@@ -411,6 +411,39 @@ const loadCompletion = async (completion: any) => {
     completionId.value = completion.id;
 }
 
+const seedInstructions = async () => {
+    if ((await getCompletions()).length === 0) {
+        await logCompletion(
+            "📋 Identify 3 main ideas.",
+            "You are the backend of a plugin for Miro.\n\nGiven is a list of colored sticky notes. Notes with the same color belong to the same class. The color of the sticky notes is indicated with the color tag `[color: $COLOR]`. Here is the list of colored Notes:\n* [color: red] Advances in the 20th and 21st centuries led to thousands of apple varieties, though commercial cultivation focuses on a few popular types, leading to conservation efforts\n* [color: yellow] Modern cultivation faces environmental and workers' rights concerns, leading to a rise in organic and fair-trade bananas.\n* [color: dark_green] Cucumbers originated in India over 3,000 years ago and were spread to other parts of the world by trading with various cultures.\n* [color: yellow] The early 20th century Panama disease outbreak led to a switch from Gros Michel to the Cavendish variety.\n* [color: red] Apples originated in Central Asia 4,000 to 10,000 years ago and spread westward to Europe and the Middle East along Silk Road trade routes.\n* [color: dark_green] They reached Europe via the Romans, and during the 14th century, were introduced to the New World by European explorers.\n* [color: red] European colonists brought apple seeds to North America during the 17th century, leading to widespread cultivation.\n* [color: dark_green] Modern cultivation practices and selective breeding have led to a wide range of cucumber varieties suited to different climates and uses.\n* [color: yellow] Developments in refrigerated transport during the 20th century enabled global banana distribution.\n* [color: yellow] The 19th century saw commercial banana cultivation in the Caribbean and Central America.\n\nApply the following instruction from a Miro user to the above sticky notes. Answer the instruction exclusively in form of a json array that contains the answer items. The answers are strings in the json array. Only answer in the form of a json array of strings.\n\nIf the answer is not provided above or you are unsure, reply with \"🤷\".\n\nInstruction: ```\nWhat is the theme of the yellow stickies?\n```\n\nResult:",
+            "[\n  \"The history and evolution of banana cultivation and distribution.\",\n  \"The origin and development of cucumber cultivation.\",\n  \"The origin, spread, and modern cultivation of apples.\"\n]",
+            "List the three main ideas of these sticky notes.",
+            "en");
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await logCompletion(
+            "📌 Yellow stickies theme",
+            "You are the backend of a plugin for Miro.\n\nGiven is a list of colored sticky notes. Notes with the same color belong to the same class. The color of the sticky notes is indicated with the color tag `[color: $COLOR]`. Here is the list of colored Notes:\n* [color: yellow] The early 20th century Panama disease outbreak led to a switch from Gros Michel to the Cavendish variety.\n* [color: dark_green] Cucumbers originated in India over 3,000 years ago and were spread to other parts of the world by trading with various cultures.\n* [color: dark_green] They reached Europe via the Romans, and during the 14th century, were introduced to the New World by European explorers.\n* [color: yellow] Modern cultivation faces environmental and workers' rights concerns, leading to a rise in organic and fair-trade bananas.\n* [color: red] Apples originated in Central Asia 4,000 to 10,000 years ago and spread westward to Europe and the Middle East along Silk Road trade routes.\n* [color: red] Advances in the 20th and 21st centuries led to thousands of apple varieties, though commercial cultivation focuses on a few popular types, leading to conservation efforts\n* [color: red] European colonists brought apple seeds to North America during the 17th century, leading to widespread cultivation.\n* [color: dark_green] Modern cultivation practices and selective breeding have led to a wide range of cucumber varieties suited to different climates and uses.\n* [color: yellow] Developments in refrigerated transport during the 20th century enabled global banana distribution.\n* [color: yellow] The 19th century saw commercial banana cultivation in the Caribbean and Central America.\n\nApply the following instruction from a Miro user to the above sticky notes. Answer the instruction exclusively in form of a json array that contains the answer items. The answers are strings in the json array. Only answer in the form of a json array of strings.\n\nIf the answer is not provided above or you are unsure, reply with \"🤷\".\n\nInstruction: ```\nList the three main ideas of these sticky notes.\n```\n\nResult:",
+            "[\"Banana cultivation and its history\"]",
+            "What is the theme of the yellow stickies?",
+            "en");
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await logCompletion(
+            "🍇 3 grape facts",
+            "You are the backend of a plugin for Miro.\n\nGiven is a list of colored sticky notes. Notes with the same color belong to the same class. The color of the sticky notes is indicated with the color tag `[color: $COLOR]`. Here is the list of colored Notes:\n* [color: yellow] The early 20th century Panama disease outbreak led to a switch from Gros Michel to the Cavendish variety.\n* [color: dark_green] Cucumbers originated in India over 3,000 years ago and were spread to other parts of the world by trading with various cultures.\n* [color: dark_green] They reached Europe via the Romans, and during the 14th century, were introduced to the New World by European explorers.\n* [color: red] Advances in the 20th and 21st centuries led to thousands of apple varieties, though commercial cultivation focuses on a few popular types, leading to conservation efforts\n* [color: yellow] Modern cultivation faces environmental and workers' rights concerns, leading to a rise in organic and fair-trade bananas.\n* [color: red] Apples originated in Central Asia 4,000 to 10,000 years ago and spread westward to Europe and the Middle East along Silk Road trade routes.\n* [color: red] European colonists brought apple seeds to North America during the 17th century, leading to widespread cultivation.\n* [color: dark_green] Modern cultivation practices and selective breeding have led to a wide range of cucumber varieties suited to different climates and uses.\n* [color: yellow] Developments in refrigerated transport during the 20th century enabled global banana distribution.\n* [color: yellow] The 19th century saw commercial banana cultivation in the Caribbean and Central America.\n\nApply the following instruction from a Miro user to the above sticky notes. Answer the instruction exclusively in form of a json array that contains the answer items. The answers are strings in the json array. Only answer in the form of a json array of strings.\n\nIf the answer is not provided above or you are unsure, reply with \"🤷\".\n\nInstruction: ```\nAdd 3 sticky notes with facts about grapes in the same style.\n```\n\nResult:",
+            "[\n\"[color: purple] Grapes originated in the Near East and were spread to other parts of the world by ancient civilizations.\",\n\"[color: purple] Grape cultivation played a major role in the ancient civilizations of Rome and Greece, influencing their cultures and economies.\",\n\"[color: purple] Modern grape cultivation practices have led to a wide range of grape varieties suited for wine production, eating fresh, or drying into raisins.\"\n]",
+            "Add 3 sticky notes with facts about grapes in the same style.",
+            "en");
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await logCompletion(
+            "🇪🇸 Translate: Spanish",
+            "You are the backend of a plugin for Miro.\n\nGiven is a list of colored sticky notes. Notes with the same color belong to the same class. The color of the sticky notes is indicated with the color tag `[color: $COLOR]`. Here is the list of colored Notes:\n* [color: dark_green] Modern cultivation practices and selective breeding have led to a wide range of cucumber varieties suited to different climates and uses.\n\nApply the following instruction from a Miro user to the above sticky notes. Answer the instruction exclusively in form of a json array that contains the answer items. The answers are strings in the json array. Only answer in the form of a json array of strings.\n\nIf the answer is not provided above or you are unsure, reply with \"🤷\".\n\nInstruction: ```\nTranslate to spanish.\n```\n\nResult:",
+            "[\"Prácticas modernas de cultivo y crianza selectiva han llevado a una amplia gama de variedades de pepino adecuadas para diferentes climas y usos.\"]",
+            "Translate to spanish.",
+            "en");
+        await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+}
+
 onMounted(async () => {
     miro.board.ui.on('selection:update', updateSelectedItems);
     await updateSelectedItems();
@@ -435,6 +468,8 @@ onMounted(async () => {
     } else {
         currentTab.value = 'settings';
     }
+
+    seedInstructions();
 });
 
 const clearLocalStorage = async () => {
