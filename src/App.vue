@@ -215,38 +215,58 @@
 
         <div v-if="currentTab === 'feedback'" class="cs1 ce12">
             <div class="cs1 ce12">
-                <h4>Quick Start Examples</h4>
-                <a class="load-link p-medium" target="_blank" href="https://drive.google.com/file/d/15eKkrzqESZNXgShgR51wZ4BseErl-Ijh/view">
+                <h4 class="feedback-heading">Quick Start Examples</h4>
+                <a class="load-link p-medium" target="_blank"
+                   href="https://drive.google.com/file/d/15eKkrzqESZNXgShgR51wZ4BseErl-Ijh/view">
                     ☝️ Introduction to "GPT for Miro"
                 </a>
                 <br>
-                <a class="load-link p-medium" target="_blank" href="https://drive.google.com/file/d/1vT4Qynikx50X2KV2riU-K3Ug-6JbTK08/view">
+                <a class="load-link p-medium" target="_blank"
+                   href="https://drive.google.com/file/d/1vT4Qynikx50X2KV2riU-K3Ug-6JbTK08/view">
                     🇪🇸 Translate a sticky-note
                 </a>
                 <br>
-                <a class="load-link p-medium" target="_blank" href="https://drive.google.com/file/d/1MJJf7UNkMfz_Jj34nWx5ATMGofmdZpLf/view">
+                <a class="load-link p-medium" target="_blank"
+                   href="https://drive.google.com/file/d/1MJJf7UNkMfz_Jj34nWx5ATMGofmdZpLf/view">
                     📌 Saving and loading instructions
                 </a>
                 <br>
-                <a class="load-link p-medium" target="_blank" href="https://drive.google.com/file/d/1Qov7GclUkzmXvGeNQY_FN-42-ICEZycK/view">
+                <a class="load-link p-medium" target="_blank"
+                   href="https://drive.google.com/file/d/1Qov7GclUkzmXvGeNQY_FN-42-ICEZycK/view">
                     💡 Identify main ideas
                 </a>
                 <br>
-                <a class="load-link p-medium" target="_blank" href="https://drive.google.com/file/d/1wPZGb6gH8-bfKbXHb5TzUIEKG6ix0U13/view">
+                <a class="load-link p-medium" target="_blank"
+                   href="https://drive.google.com/file/d/1wPZGb6gH8-bfKbXHb5TzUIEKG6ix0U13/view">
                     🌈 Reference color of the sticky
                 </a>
-                <h4>Feature Requests und Feedback</h4>
+                <h4 class="feedback-heading">Feature Requests und Feedback</h4>
                 <a class="load-link p-medium" target="_blank" href="mailto:christian.geisler@orbitdigital.de">
                     Contact the authors
                 </a>
-                <h4>Source Code</h4>
+                <h4 class="feedback-heading">Source Code</h4>
                 <a class="load-link p-medium" target="_blank" href="https://github.com/sichgeis/gpt-for-miro">
                     Open GPT for Miro on Github
                 </a>
                 <br>
                 <p class="p-medium">
-                    Version: {{ gitCommitHash.substring(0,7) }}
+                    Version: {{ gitCommitHash.substring(0, 7) }}
                 </p>
+                <h4 class="feedback-heading">More about Orbit Ventures</h4>
+                <a class="load-link p-medium" target="_blank"
+                   href="https://orbitdigital.de/">
+                    Orbit - delivering impact together
+                </a>
+                <br>
+                <a class="load-link p-medium" target="_blank"
+                   href="https://techsnack.orbitdigital.de/">
+                    Techsnack: our tech blog
+                </a>
+                <br>
+                <a class="load-link p-medium" target="_blank"
+                   href="https://orbitdigital.de/career">
+                    We are hiring 😉
+                </a>
             </div>
         </div>
     </div>
@@ -564,5 +584,10 @@ onBeforeUnmount(() => {
     & > a:active {
         color: black;
     }
+}
+
+.feedback-heading {
+    margin-bottom: 0.3rem;
+    margin-top: 2rem;
 }
 </style>
