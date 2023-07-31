@@ -1,18 +1,3 @@
-variable "TF_STATE_S3_BUCKET" {
-  type = string
-  description = "S3 bucket name for the tf-state. Provide as an env var like `TF_VAR_TF_STATE_S3_BUCKET=your-bucket-name`"
-}
-
-variable "TF_STATE_KEY" {
-  type = string
-  description = "Key for the tf-state. Provide as an env var like `TF_VAR_TF_STATE_KEY=your-state-key`"
-}
-
-variable "TF_REGION" {
-  type = string
-  description = "AWS region. Provide as an env var like `TF_VAR_TF_REGION=your-aws-region`"
-}
-
 terraform {
   required_version = ">= 0.13"
   required_providers {
@@ -22,12 +7,12 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = var.TF_STATE_S3_BUCKET
-    key    = var.TF_STATE_KEY
-    region = var.TF_REGION
+    bucket = "your-tf-state-s3-bucket-name-here"
+    key    = "your-tf-state-key-here/terraform.state"
+    region = "your-aws-region-here"
   }
 }
 
 provider "aws" {
-  region = var.TF_REGION
+  region = "your-aws-region-here"
 }

@@ -1,6 +1,7 @@
 variable "S3_BUCKET_NAME" {
+  default = "your-s3-bucket-name-here"
   type = string
-  description = "S3 bucket name for the static hosting of the app. Provide as an env var like `TF_VAR_S3_BUCKET=your-bucket-name`"
+  description = "S3 bucket name for the static hosting of the app."
 }
 
 resource "aws_s3_bucket" "this" {
