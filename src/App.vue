@@ -176,7 +176,7 @@
                     Open GPT for Miro on Github
                 </a>
                 <p class="p-medium">
-                    Version: {{ gitCommitHash.substring(0, 7) }}
+                    Version: {{ gitCommitHash.substring(0, 8) }}
                 </p>
                 <h4 class="feedback-heading">More about Orbit Ventures</h4>
                 <a class="load-link p-medium" target="_blank"
