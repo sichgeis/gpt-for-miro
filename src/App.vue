@@ -33,6 +33,7 @@
                 </div>
             </div>
         </div>
+
         <div v-if="currentTab === 'start'" class="grid cs1 ce12 scrollable">
             <div class="cs1 ce12">
                 <p class="p-small">Select sticky-notes on the Miro board and give an instruction what to do with them.
@@ -58,16 +59,8 @@
                     {{ saveButtonText }}
                 </button>
             </div>
-            <div class="cs1 ce12 grid">
-                <div class="cs1 ce2 p-small">
-                    <span class="m2 icon icon-help-question" @click="currentTab = 'feedback'" />
-                </div>
-                <div class="cs3 ce12 p-small build-by-orbit">
-                    Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
-                    Ventures</a>
-                </div>
-            </div>
         </div>
+
         <div v-if="currentTab === 'selectedItems'" class="cs1 ce12 grid">
             <div class="cs1 ce12">
                 <p class="p-small">
@@ -81,15 +74,6 @@
                         <br>
                         <br>
                     </div>
-                </div>
-            </div>
-            <div class="cs1 ce12 grid">
-                <div class="cs1 ce2 p-small">
-                    <span class="m2 icon icon-help-question" @click="currentTab = 'feedback'" />
-                </div>
-                <div class="cs3 ce12 p-small build-by-orbit">
-                    Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
-                    Ventures</a>
                 </div>
             </div>
         </div>
@@ -124,15 +108,6 @@
                     {{ saveButtonText }}
                 </button>
             </div>
-            <div class="cs1 ce12 grid">
-                <div class="cs1 ce2 p-small">
-                    <span class="m2 icon icon-help-question" @click="currentTab = 'feedback'" />
-                </div>
-                <div class="cs3 ce12 p-small build-by-orbit">
-                    Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
-                    Ventures</a>
-                </div>
-            </div>
         </div>
 
         <div v-if="currentTab === 'load'" class="cs1 ce12">
@@ -161,25 +136,16 @@
                 ></textarea>
             </div>
             <div class="cs1 ce12 grid">
-                <button type="button" class="cs1 ce12 button button-primary load-instruction-button"
+                <button type="button" class="cs1 ce12 button button-primary"
                         :disabled="completeDisabled"
                         @click="complete()">
                     {{ completeDisabled ? '🚨 No sticky notes selected' : completeButtonText }}
                 </button>
             </div>
-            <div class="cs1 ce12 grid">
-                <div class="cs1 ce2 p-small">
-                    <span class="m2 icon icon-help-question" @click="currentTab = 'feedback'" />
-                </div>
-                <div class="cs3 ce12 p-small build-by-orbit">
-                    Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
-                    Ventures</a>
-                </div>
-            </div>
         </div>
 
         <div v-if="currentTab === 'feedback'" class="cs1 ce12">
-            <div class="cs1 ce12 scrollable feedback-height flex-container">
+            <div class="cs1 ce12 scrollable feedback-content flex-container">
                 <h4 class="feedback-heading">Quick Start Examples</h4>
                 <a class="load-link p-medium" target="_blank"
                    href="https://drive.google.com/file/d/15eKkrzqESZNXgShgR51wZ4BseErl-Ijh/view">
@@ -226,19 +192,10 @@
                     We are hiring 😉
                 </a>
                 <div class="flex-grow"></div>
-                <div class="cs1 ce12 grid">
-                    <div class="cs1 ce2 p-small">
-                        <span class="m2 icon icon-deactivated" @click="currentTab = 'start'" />
-                    </div>
-                    <div class="cs3 ce12 p-small build-by-orbit">
-                        Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
-                        Ventures</a>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <div v-if="currentTab === 'settings'" class="cs1 ce12 scrollable settings-height flex-container">
+        <div v-if="currentTab === 'settings'" class="cs1 ce12 scrollable settings-content flex-container">
             <div class="cs1 ce12 grid">
                 <h4 class="cs1 ce12 input-label">OpenAI API Key</h4>
                 <input class="cs1 ce12 input" type="text" :value="openaiApiKey" @blur="setOpenaiApiKey"/>
@@ -282,22 +239,25 @@
             </div>
             <div class="flex-grow"></div>
             <div class="cs1 ce12 grid">
-                <button type="button" class="cs1 ce12 button button-danger no-overflow clear-button"
+                <button type="button" class="cs1 ce12 button button-danger no-overflow"
                         @click="clearLocalStorage()">
                     Reset GPT for Miro (clear browser cache)
                 </button>
             </div>
-            <div class="cs1 ce12 grid">
-                <div class="cs1 ce2 p-small">
-                    <span class="m2 icon icon-help-question" @click="currentTab = 'feedback'" />
-                </div>
-                <div class="cs3 ce12 p-small build-by-orbit">
-                    Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
-                    Ventures</a>
-                </div>
+        </div>
+
+        <div class="cs1 ce12 grid">
+            <div class="cs1 ce2 p-small">
+                <span v-if="currentTab === 'feedback'" class="m2 icon icon-deactivated" @click="currentTab = 'start'" />
+                <span v-else class="m2 icon icon-help-question" @click="currentTab = 'feedback'" />
+            </div>
+            <div class="cs3 ce12 p-small build-by-orbit">
+                Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
+                Ventures</a>
             </div>
         </div>
     </div>
+
 </template>
 
 <script setup lang="ts">
@@ -567,12 +527,8 @@ onBeforeUnmount(() => {
 
 .load-instruction {
     margin-top: 0;
-    height: 6.7rem;
+    height: 7rem;
     margin-bottom: 1rem;
-}
-
-.load-instruction-button {
-    margin-bottom: 0.80rem !important;
 }
 
 .second-tab-bar {
@@ -617,11 +573,6 @@ onBeforeUnmount(() => {
     }
 }
 
-.feedback-heading {
-    margin-bottom: 0.8rem;
-    margin-top: 2rem;
-}
-
 .flex-container {
     display: flex;
     flex-direction: column;
@@ -631,15 +582,24 @@ onBeforeUnmount(() => {
     flex-grow: 1;
 }
 
-.clear-button {
-    margin-bottom: 0.7rem !important;
+.settings-content {
+    height: calc(100vh - 6.5rem);
 }
 
-.settings-height {
-    height: calc(100vh - 72px);
-}
+.feedback-content {
+    height: calc(100vh - 6.5rem);
 
-.feedback-height {
-    height: calc(100vh - 72px);
+    & > h4 {
+        margin-bottom: 0.4rem;
+        margin-top: 1.5rem;
+    }
+
+    & > h4:first-child {
+        margin-top: 1rem;
+    }
+
+    & > a {
+      margin-bottom: 0.3rem;
+    }
 }
 </style>
