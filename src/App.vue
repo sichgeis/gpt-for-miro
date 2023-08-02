@@ -3,33 +3,33 @@
     <div class="grid cs1 ce12">
         <div class="tabs cs1 ce12">
             <div class="tabs-header-list">
-                <div tabindex="0" class="tab cs1 ce4" :class="{ 'tab-active' : currentTab === 'start' }"
-                     @click="currentTab = 'start'">
-                    <div class="tab-text tab-badge">Instruction</div>
+                <div ref="tabs" tabindex="0" class="tab cs1 ce4" :class="{ 'tab-active' : currentTab === 'start' }"
+                     @click="currentTab = ('start')" @keyup.space="currentTab = ('start')">
+                    <div class="tab-text">Instruction</div>
                 </div>
-                <div tabindex="0" class="tab cs5 ce8" :class="{ 'tab-active' : currentTab === 'selectedItems' }"
-                     @click="currentTab = 'selectedItems'">
-                    <div class="tab-text tab-badge">Items</div>
+                <div ref="tabs" tabindex="0" class="tab cs5 ce8" :class="{ 'tab-active' : currentTab === 'selectedItems' }"
+                     @click="currentTab = ('selectedItems')" @keyup.space="currentTab = ('selectedItems')">
+                    <div class="tab-text">Items</div>
                 </div>
-                <div tabindex="0" class="tab cs5 ce8" :class="{ 'tab-active' : currentTab === 'prompt' }"
-                     @click="currentTab = 'prompt'">
-                    <div class="tab-text tab-badge">Prompt</div>
+                <div ref="tabs" tabindex="0" class="tab cs5 ce8" :class="{ 'tab-active' : currentTab === 'prompt' }"
+                     @click="currentTab = 'prompt'" @keyup.space="currentTab = 'prompt'">
+                    <div class="tab-text">Prompt</div>
                 </div>
             </div>
         </div>
         <div class="tabs cs1 ce12 second-tab-bar">
             <div class="tabs-header-list">
-                <div tabindex="0" class="tab cs1 ce4" :class="{ 'tab-active' : currentTab === 'load' }"
-                     @click="loadAndSwitchTab()">
-                    <div class="tab-text tab-badge">Load</div>
+                <div ref="tabs" tabindex="0" class="tab cs1 ce4" :class="{ 'tab-active' : currentTab === 'load' }"
+                     @click="loadAndSwitchTab()" @keyup.space="loadAndSwitchTab()">
+                    <div class="tab-text">Load</div>
                 </div>
-                <div tabindex="0" class="tab cs5 ce8" :class="{ 'tab-active' : currentTab === 'feedback' }"
-                     @click="currentTab = 'feedback'">
-                    <div class="tab-text tab-badge">Feedback</div>
+                <div ref="tabs" tabindex="0" class="tab cs5 ce8" :class="{ 'tab-active' : currentTab === 'feedback' }"
+                     @click="currentTab = 'feedback'" @keyup.space="currentTab = 'feedback'">
+                    <span class="tab-text">Feedback</span>
                 </div>
-                <div tabindex="0" class="tab cs9 ce12" :class="{ 'tab-active' : currentTab === 'settings' }"
-                     @click="currentTab = 'settings'">
-                    <div class="tab-text tab-badge">Settings</div>
+                <div ref="tabs" tabindex="0" class="tab cs9 ce12" :class="{ 'tab-active' : currentTab === 'settings' }"
+                     @click="currentTab = 'settings'" @keyup.space="currentTab = 'settings'">
+                    <div class="tab-text">Settings</div>
                 </div>
             </div>
         </div>
@@ -58,11 +58,15 @@
                     {{ saveButtonText }}
                 </button>
             </div>
-            <div class="cs1 ce12 p-small build-by-orbit">
-                Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
-                Ventures</a>
+            <div class="cs1 ce12 grid">
+                <div class="cs1 ce2 p-small">
+                    <span class="m2 icon icon-help-question" @click="currentTab = 'feedback'" />
+                </div>
+                <div class="cs3 ce12 p-small build-by-orbit">
+                    Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
+                    Ventures</a>
+                </div>
             </div>
-
         </div>
         <div v-if="currentTab === 'selectedItems'" class="cs1 ce12 grid">
             <div class="cs1 ce12">
@@ -79,9 +83,14 @@
                     </div>
                 </div>
             </div>
-            <div class="cs1 ce12 p-small build-by-orbit">
-                Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
-                Ventures</a>
+            <div class="cs1 ce12 grid">
+                <div class="cs1 ce2 p-small">
+                    <span class="m2 icon icon-help-question" @click="currentTab = 'feedback'" />
+                </div>
+                <div class="cs3 ce12 p-small build-by-orbit">
+                    Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
+                    Ventures</a>
+                </div>
             </div>
         </div>
 
@@ -115,63 +124,14 @@
                     {{ saveButtonText }}
                 </button>
             </div>
-            <div class="cs1 ce12 p-small build-by-orbit">
-                Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
-                Ventures</a>
-            </div>
-        </div>
-
-        <div v-if="currentTab === 'settings'" class="cs1 ce12 grid scrollable">
             <div class="cs1 ce12 grid">
-                <h4 class="cs1 ce12 input-label">OpenAI API Key</h4>
-                <input class="cs1 ce12 input" type="text" :value="openaiApiKey" @blur="setOpenaiApiKey"/>
-            </div>
-            <div class="cs1 ce12">
-                <h4 class="radio-label">Language of Stickies and Prompt</h4>
-                <label class="radiobutton">
-                    <input type="radio" name="lang-radio" :checked="promptLanguage === 'en'"
-                           @click="switchPromptLanguage( 'en')">
-                    <span>English</span>
-                </label>
-                <label class="radiobutton">
-                    <input type="radio" name="lang-radio" :checked="promptLanguage === 'de'"
-                           @click="switchPromptLanguage('de')">
-                    <span>Deutsch</span>
-                </label>
-            </div>
-            <div class="cs1 ce12 grid">
-                <h4 class="cs1 ce12 input-label">Temperature</h4>
-                <input class="cs1 ce3 input" type="number" min="0" max="1" step=".1" :value="temperature"
-                       @blur="setTemperature"/>
-            </div>
-            <div class="cs1 ce12">
-                <h4 class="radio-label">Version of Language Model</h4>
-                <label class="radiobutton">
-                    <input type="radio" name="model-radio" :checked="modelVersion === 'gpt-3.5-turbo'"
-                           @click="switchModelVersion('gpt-3.5-turbo')">
-                    <span>gpt-3.5-turbo (4k token context)</span>
-                </label>
-                <label class="radiobutton">
-                    <input type="radio" name="model-radio" :checked="modelVersion === 'gpt-3.5-turbo-16k'"
-                           @click="switchModelVersion('gpt-3.5-turbo-16k')">
-                    <span>gpt-3.5-turbo-16k (16k token context)</span>
-                </label>
-                <label class="radiobutton">
-                    <input type="radio" name="model-radio" :checked="modelVersion === 'gpt-4'"
-                           :disabled="!gpt4Available"
-                           @click="switchModelVersion( 'gpt-4')">
-                    <span>gpt-4 (slow, 8k token context)</span>
-                </label>
-            </div>
-            <div class="cs1 ce12 grid">
-                <button type="button" class="cs1 ce12 button button-danger no-overflow"
-                        @click="clearLocalStorage()">
-                    Reset GPT for Miro (clear browser cache)
-                </button>
-            </div>
-            <div class="cs1 ce12 p-small build-by-orbit">
-                Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
-                Ventures</a>
+                <div class="cs1 ce2 p-small">
+                    <span class="m2 icon icon-help-question" @click="currentTab = 'feedback'" />
+                </div>
+                <div class="cs3 ce12 p-small build-by-orbit">
+                    Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
+                    Ventures</a>
+                </div>
             </div>
         </div>
 
@@ -207,14 +167,19 @@
                     {{ completeDisabled ? '🚨 No sticky notes selected' : completeButtonText }}
                 </button>
             </div>
-            <div class="cs1 ce12 p-small build-by-orbit">
-                Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
-                Ventures</a>
+            <div class="cs1 ce12 grid">
+                <div class="cs1 ce2 p-small">
+                    <span class="m2 icon icon-help-question" @click="currentTab = 'feedback'" />
+                </div>
+                <div class="cs3 ce12 p-small build-by-orbit">
+                    Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
+                    Ventures</a>
+                </div>
             </div>
         </div>
 
         <div v-if="currentTab === 'feedback'" class="cs1 ce12">
-            <div class="cs1 ce12">
+            <div class="cs1 ce12 scrollable feedback-height flex-container">
                 <h4 class="feedback-heading">Quick Start Examples</h4>
                 <a class="load-link p-medium" target="_blank"
                    href="https://drive.google.com/file/d/15eKkrzqESZNXgShgR51wZ4BseErl-Ijh/view">
@@ -260,6 +225,76 @@
                    href="https://orbitdigital.de/career">
                     We are hiring 😉
                 </a>
+                <div class="flex-grow"></div>
+                <div class="cs1 ce12 grid">
+                    <div class="cs1 ce2 p-small">
+                        <span class="m2 icon icon-deactivated" @click="currentTab = 'start'" />
+                    </div>
+                    <div class="cs3 ce12 p-small build-by-orbit">
+                        Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
+                        Ventures</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="currentTab === 'settings'" class="cs1 ce12 scrollable settings-height flex-container">
+            <div class="cs1 ce12 grid">
+                <h4 class="cs1 ce12 input-label">OpenAI API Key</h4>
+                <input class="cs1 ce12 input" type="text" :value="openaiApiKey" @blur="setOpenaiApiKey"/>
+            </div>
+            <div class="cs1 ce12">
+                <h4 class="radio-label">Language of Stickies and Prompt</h4>
+                <label class="radiobutton">
+                    <input type="radio" name="lang-radio" :checked="promptLanguage === 'en'"
+                           @click="switchPromptLanguage( 'en')">
+                    <span>English</span>
+                </label>
+                <label class="radiobutton">
+                    <input type="radio" name="lang-radio" :checked="promptLanguage === 'de'"
+                           @click="switchPromptLanguage('de')">
+                    <span>Deutsch</span>
+                </label>
+            </div>
+            <div class="cs1 ce12 grid">
+                <h4 class="cs1 ce12 input-label">Temperature</h4>
+                <input class="cs1 ce3 input" type="number" min="0" max="1" step=".1" :value="temperature"
+                       @blur="setTemperature"/>
+            </div>
+            <div class="cs1 ce12">
+                <h4 class="radio-label">Version of Language Model</h4>
+                <label class="radiobutton">
+                    <input type="radio" name="model-radio" :checked="modelVersion === 'gpt-3.5-turbo'"
+                           @click="switchModelVersion('gpt-3.5-turbo')">
+                    <span>gpt-3.5-turbo (4k token context)</span>
+                </label>
+                <label class="radiobutton">
+                    <input type="radio" name="model-radio" :checked="modelVersion === 'gpt-3.5-turbo-16k'"
+                           @click="switchModelVersion('gpt-3.5-turbo-16k')">
+                    <span>gpt-3.5-turbo-16k (16k token context)</span>
+                </label>
+                <label class="radiobutton">
+                    <input type="radio" name="model-radio" :checked="modelVersion === 'gpt-4'"
+                           :disabled="!gpt4Available"
+                           @click="switchModelVersion( 'gpt-4')">
+                    <span>gpt-4 (slow, 8k token context)</span>
+                </label>
+            </div>
+            <div class="flex-grow"></div>
+            <div class="cs1 ce12 grid">
+                <button type="button" class="cs1 ce12 button button-danger no-overflow clear-button"
+                        @click="clearLocalStorage()">
+                    Reset GPT for Miro (clear browser cache)
+                </button>
+            </div>
+            <div class="cs1 ce12 grid">
+                <div class="cs1 ce2 p-small">
+                    <span class="m2 icon icon-help-question" @click="currentTab = 'feedback'" />
+                </div>
+                <div class="cs3 ce12 p-small build-by-orbit">
+                    Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
+                    Ventures</a>
+                </div>
             </div>
         </div>
     </div>
@@ -537,7 +572,7 @@ onBeforeUnmount(() => {
 }
 
 .load-instruction-button {
-    margin-bottom: 0.82rem !important;
+    margin-bottom: 0.80rem !important;
 }
 
 .second-tab-bar {
@@ -585,5 +620,26 @@ onBeforeUnmount(() => {
 .feedback-heading {
     margin-bottom: 0.8rem;
     margin-top: 2rem;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+.clear-button {
+    margin-bottom: 0.7rem !important;
+}
+
+.settings-height {
+    height: calc(100vh - 72px);
+}
+
+.feedback-height {
+    height: calc(100vh - 72px);
 }
 </style>
