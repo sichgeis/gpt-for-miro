@@ -7,7 +7,8 @@
                      @click="currentTab = ('start')" @keyup.space="currentTab = ('start')">
                     <div class="tab-text">Instruction</div>
                 </div>
-                <div ref="tabs" tabindex="0" class="tab cs4 ce6" :class="{ 'tab-active' : currentTab === 'selectedItems' }"
+                <div ref="tabs" tabindex="0" class="tab cs4 ce6"
+                     :class="{ 'tab-active' : currentTab === 'selectedItems' }"
                      @click="currentTab = ('selectedItems')" @keyup.space="currentTab = ('selectedItems')">
                     <div class="tab-text">Items</div>
                 </div>
@@ -195,7 +196,7 @@
             <div class="cs1 ce12">
                 <h4 class="radio-label">Quick Help</h4>
                 <label class="checkbox">
-                    <input type="checkbox" tabindex="0" v-model="quickHelpText" />
+                    <input type="checkbox" tabindex="0" v-model="quickHelpText"/>
                     <span>Show help texts</span>
                 </label>
             </div>
@@ -267,12 +268,12 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import {createCompletion, createNameForSavedInstruction, GptModel, isGpt4Available} from "./openai";
-import {lang} from "./lang";
-import {addSticky, getCenterOfGravity, getHeight} from "./miro";
-import {StickyNote} from "@mirohq/websdk-types";
-import {ago, stripHtmlString} from "./utils";
-import {getCompletions, logCompletion} from "./storage";
+import { createCompletion, createNameForSavedInstruction, GptModel, isGpt4Available } from "./openai";
+import { lang } from "./lang";
+import { addSticky, getCenterOfGravity, getHeight } from "./miro";
+import { StickyNote } from "@mirohq/websdk-types";
+import { ago, stripHtmlString } from "./utils";
+import { getCompletions, logCompletion } from "./storage";
 
 const openaiApiKey = ref('❗️  Insert your OpenAI API Key here');
 const saveDisabled = ref(true);
@@ -343,7 +344,7 @@ const updateSelectedItems = async () => {
 const complete = async () => {
 
     completeButtonText.value = '🤖 Waiting for the machine ...';
-    const {x: selectionCenterX, y: selectionCenterY} = await getCenterOfGravity(selectedStickyNotes.value);
+    const { x: selectionCenterX, y: selectionCenterY } = await getCenterOfGravity(selectedStickyNotes.value);
     const selectionHeight = getHeight(selectedStickyNotes.value);
     const resultStickyNoteHeight = getHeight(selectedStickyNotes.value[0] ? selectedStickyNotes.value[0] : []);
 
@@ -354,11 +355,11 @@ const complete = async () => {
     } catch (e) {
         console.log('error', e);
         if (e.toString().includes('401')) {
-            content = 'Authentication error with OpenAI. Have you provided a valid API key for OpenAI in the settings tab?';
+            content = 'Authentication error with OpenAI. Have you provided a valid API key for OpenAI in the settings? Access the settings in the footer of the app via the ⚙️ icon.';
         } else if (e.toString().includes('404') && modelVersion.value === 'gpt-4') {
-            content = 'You seem to have no access to the OpenAI GPT-4 model. Upgrade your OpenAI subscription to use GPT-4 or switch to GPT-3.5 in the settings tab.';
+            content = 'You seem to have no access to the OpenAI GPT-4 model. Upgrade your OpenAI subscription to use GPT-4 or switch to GPT-3.5 in the settings. Access the settings in the footer of the app via the ⚙️ icon.';
         } else if (e.toString().includes('setRequestHeader')) {
-            content = 'Error in communication with OpenAI. Have you provided a valid API key in the settings tab?.';
+            content = 'Error in communication with OpenAI. Have you provided a valid API key in the settings? Access the settings in the footer of the app via the ⚙️ icon.';
         } else {
             content = 'Error in communication with OpenAI. ' + e.toString();
         }
@@ -620,7 +621,7 @@ onBeforeUnmount(() => {
     }
 
     & > a {
-      margin-bottom: 0.3rem;
+        margin-bottom: 0.3rem;
     }
 }
 </style>
