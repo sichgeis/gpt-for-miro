@@ -3,33 +3,21 @@
     <div class="grid cs1 ce12">
         <div class="tabs cs1 ce12">
             <div class="tabs-header-list">
-                <div ref="tabs" tabindex="0" class="tab cs1 ce4" :class="{ 'tab-active' : currentTab === 'start' }"
+                <div ref="tabs" tabindex="0" class="tab cs1 ce3" :class="{ 'tab-active' : currentTab === 'start' }"
                      @click="currentTab = ('start')" @keyup.space="currentTab = ('start')">
                     <div class="tab-text">Instruction</div>
                 </div>
-                <div ref="tabs" tabindex="0" class="tab cs5 ce8" :class="{ 'tab-active' : currentTab === 'selectedItems' }"
+                <div ref="tabs" tabindex="0" class="tab cs4 ce6" :class="{ 'tab-active' : currentTab === 'selectedItems' }"
                      @click="currentTab = ('selectedItems')" @keyup.space="currentTab = ('selectedItems')">
                     <div class="tab-text">Items</div>
                 </div>
-                <div ref="tabs" tabindex="0" class="tab cs5 ce8" :class="{ 'tab-active' : currentTab === 'prompt' }"
+                <div ref="tabs" tabindex="0" class="tab cs7 ce9" :class="{ 'tab-active' : currentTab === 'prompt' }"
                      @click="currentTab = 'prompt'" @keyup.space="currentTab = 'prompt'">
                     <div class="tab-text">Prompt</div>
                 </div>
-            </div>
-        </div>
-        <div class="tabs cs1 ce12 second-tab-bar">
-            <div class="tabs-header-list">
-                <div ref="tabs" tabindex="0" class="tab cs1 ce4" :class="{ 'tab-active' : currentTab === 'load' }"
+                <div ref="tabs" tabindex="0" class="tab cs10 ce12" :class="{ 'tab-active' : currentTab === 'load' }"
                      @click="loadAndSwitchTab()" @keyup.space="loadAndSwitchTab()">
                     <div class="tab-text">Load</div>
-                </div>
-                <div ref="tabs" tabindex="0" class="tab cs5 ce8" :class="{ 'tab-active' : currentTab === 'feedback' }"
-                     @click="currentTab = 'feedback'" @keyup.space="currentTab = 'feedback'">
-                    <span class="tab-text">Feedback</span>
-                </div>
-                <div ref="tabs" tabindex="0" class="tab cs9 ce12" :class="{ 'tab-active' : currentTab === 'settings' }"
-                     @click="currentTab = 'settings'" @keyup.space="currentTab = 'settings'">
-                    <div class="tab-text">Settings</div>
                 </div>
             </div>
         </div>
@@ -247,13 +235,19 @@
         </div>
 
         <div class="cs1 ce12 grid">
-            <div class="cs1 ce2 p-small">
-                <span v-if="currentTab === 'feedback'" class="m2 icon icon-deactivated" @click="currentTab = 'start'" />
-                <span v-else class="m2 icon icon-help-question" @click="currentTab = 'feedback'" />
-            </div>
-            <div class="cs3 ce12 p-small build-by-orbit">
+            <div class="cs1 ce9 p-small footer-left">
                 Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
                 Ventures</a>
+            </div>
+            <div class="cs10 ce12 grid p-small footer-right">
+                <div>
+                    <span v-if="currentTab === 'settings'" class="icon icon-deactivated" @click="currentTab = 'start'"/>
+                    <span v-else class="icon icon-settings" @click="currentTab = 'settings'"/>
+                </div>
+                <div>
+                    <span v-if="currentTab === 'feedback'" class="icon icon-deactivated" @click="currentTab = 'start'"/>
+                    <span v-else class="icon icon-help-question" @click="currentTab = 'feedback'"/>
+                </div>
             </div>
         </div>
     </div>
@@ -545,32 +539,32 @@ onBeforeUnmount(() => {
     margin-top: 1rem;
 }
 
-.build-by-orbit {
-    margin-top: 0;
-    text-align: right;
+.footer-left {
+    margin-top: 1.4rem;
+    text-align: left;
 
     & > a:link {
         color: #4f4f4f;
         font-weight: 600;
     }
 
-    /* visited link */
-
     & > a:visited {
         color: #4f4f4f;
     }
-
-    /* mouse over link */
 
     & > a:hover {
         color: black;
     }
 
-    /* selected link */
-
     & > a:active {
         color: black;
     }
+}
+
+.footer-right {
+    margin-top: 1.2rem;
+    margin-left: 1.4rem;
+    margin-bottom: 0.5rem;
 }
 
 .flex-container {
