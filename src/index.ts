@@ -4,7 +4,7 @@ async function init() {
             miro.board.ui.openModal({
                 url: 'modal.html',
                 width: 800,
-                height: 680,
+                height: 700,
                 fullscreen: false,
             });
 

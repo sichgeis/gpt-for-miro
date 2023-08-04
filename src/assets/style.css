@@ -28,11 +28,11 @@ body {
   background-image: url("Office_ORBIT_web.webp");
   background-size: cover;
   height: 100%;
-  max-width: 580px;
+  max-width: 600px;
   margin: 0 auto;
   background-color: black;
   background-position: center;
-  padding: var(--space-xxxlarge);
+  padding: var(--space-xxlarge);
   border-radius: var(--border-radius-xlarge);
 }
 
