@@ -24,11 +24,12 @@
 
         <div v-if="currentTab === 'start'" class="grid cs1 ce12 scrollable">
             <div class="cs1 ce12">
-                <p class="p-small">Select sticky-notes on the Miro board and give an instruction what to do with them.
+                <p v-if="quickHelpText" class="p-small">Select sticky-notes on the Miro board and give an instruction what to do with them.
                     Write the instruction here and run GPT for Miro. The instruction is applied to the selected sticky
                     notes. You can also reference the color of the stickies within your instruction.</p>
                 <textarea
-                        class="textarea textarea-small mid-height"
+                        class="textarea textarea-small mid-height-quick-help"
+                        :class="{ 'mid-height' : !quickHelpText }"
                         placeholder="Placeholder text"
                         spellcheck="true"
                         id="textarea-example"
@@ -51,12 +52,13 @@
 
         <div v-if="currentTab === 'selectedItems'" class="cs1 ce12 grid">
             <div class="cs1 ce12">
-                <p class="p-small">
+                <p v-if="quickHelpText" class="p-small">
                     Here your selected sticky notes are shown. You can reference the color of the sticky notes within
                     your instruction. Use the name of the color as seen in the color tag below. Check the "Prompt" tab
                     to understand how the color of the stickies is submitted to the LLM.
                 </p>
-                <div class="full-height scrollable">
+                <div class="full-height-quick-help scrollable"
+                     :class="{ 'full-height' : !quickHelpText }">
                     <div class="p-medium" v-for="item in selectedStickyNotes" :key="item.id">
                         • [color: {{ item.style.fillColor }}] {{ stripHtmlString(item.content) }}
                         <br>
@@ -68,14 +70,15 @@
 
         <div v-if="currentTab === 'prompt'" class="cs1 ce12 grid scrollable">
             <div class="cs1 ce12">
-                <p class="p-small">
+                <p v-if="quickHelpText" class="p-small">
                     This is the prompt which will be send to the LLM. The prompt is constructed from your instruction
                     and the selected stickies. Understand it to write better instructions. You can change the prompt
                     language
                     in the "Settings" tab. If you have requests, use the "Feedback" tab.
                 </p>
                 <textarea
-                        class="textarea textarea-small mid-height"
+                        class="textarea textarea-small mid-height-quick-help"
+                        :class="{ 'mid-height' : !quickHelpText }"
                         placeholder="Placeholder text"
                         spellcheck="true"
                         id="textarea-example"
@@ -100,7 +103,7 @@
 
         <div v-if="currentTab === 'load'" class="cs1 ce12">
             <div class="cs1 ce12">
-                <div class="scrollable mid-height">
+                <div class="scrollable mid-height-quick-help">
                     <div class="load-item" v-for="completion in savedCompletions" :key="completion.id">
                         <div class="p-small">{{ ago(new Date(completion.timestamp)) }}</div>
                         <a class="load-link p-medium" @click="loadCompletion(completion)">
@@ -189,6 +192,13 @@
                 <input class="cs1 ce12 input" type="text" :value="openaiApiKey" @blur="setOpenaiApiKey"/>
             </div>
             <div class="cs1 ce12">
+                <h4 class="radio-label">Quick Help</h4>
+                <label class="checkbox">
+                    <input type="checkbox" tabindex="0" v-model="quickHelpText" />
+                    <span>Show help texts</span>
+                </label>
+            </div>
+            <div class="cs1 ce12">
                 <h4 class="radio-label">Language of Stickies and Prompt</h4>
                 <label class="radiobutton">
                     <input type="radio" name="lang-radio" :checked="promptLanguage === 'en'"
@@ -255,7 +265,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import {createCompletion, createNameForSavedInstruction, GptModel, isGpt4Available} from "./openai";
 import {lang} from "./lang";
 import {addSticky, getCenterOfGravity, getHeight} from "./miro";
@@ -298,6 +308,7 @@ const items = computed(() => {
 const temperature = ref(0.7);
 const gitCommitHash = import.meta.env.VITE_COMMIT_SHA;
 const gpt4Available = ref(false);
+const quickHelpText = ref(true);
 
 const setTemperature = (e: Event) => {
     localStorage.temperature = parseFloat((e.target as HTMLInputElement).value);
@@ -451,6 +462,10 @@ const seedInstructions = async () => {
     }
 }
 
+watch(quickHelpText, () => {
+    localStorage.quickHelpText = quickHelpText.value;
+});
+
 onMounted(async () => {
     miro.board.ui.on('selection:update', updateSelectedItems);
     await updateSelectedItems();
@@ -469,6 +484,9 @@ onMounted(async () => {
     }
     if (localStorage.gpt4Available) {
         gpt4Available.value = true;
+    }
+    if (localStorage.quickHelpText) {
+        quickHelpText.value = localStorage.quickHelpText === "true";
     }
     if (localStorage.openaiApiKey) {
         openaiApiKey.value = localStorage.openaiApiKey;
@@ -491,12 +509,20 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-.mid-height {
+.mid-height-quick-help {
     height: calc(100vh - 330px);
 }
 
-.full-height {
+.mid-height {
+    height: calc(100vh - 216px);
+}
+
+.full-height-quick-help {
     height: calc(100vh - 218px);
+}
+
+.full-height {
+    height: calc(100vh - 104px);
 }
 
 .scrollable {
