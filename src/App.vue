@@ -24,9 +24,11 @@
 
         <div v-if="currentTab === 'start'" class="grid cs1 ce12 scrollable">
             <div class="cs1 ce12">
-                <p v-if="quickHelpText" class="p-small">Select sticky-notes on the Miro board and give an instruction what to do with them.
+                <p v-if="quickHelpText" class="p-small">
+                    Select sticky-notes on the Miro board and give an instruction what to do with them.
                     Write the instruction here and run GPT for Miro. The instruction is applied to the selected sticky
-                    notes. You can also reference the color of the stickies within your instruction.</p>
+                    notes. You can also reference the color of the stickies within your instruction.
+                </p>
                 <textarea
                         class="textarea textarea-small mid-height-quick-help"
                         :class="{ 'mid-height' : !quickHelpText }"
@@ -72,9 +74,8 @@
             <div class="cs1 ce12">
                 <p v-if="quickHelpText" class="p-small">
                     This is the prompt which will be send to the LLM. The prompt is constructed from your instruction
-                    and the selected stickies. Understand it to write better instructions. You can change the prompt
-                    language
-                    in the "Settings" tab. If you have requests, use the "Feedback" tab.
+                    and the selected stickies. Understand it to write better instructions. Change the prompt
+                    language in the settings. If you have questions or requests, use the ? in the footer.
                 </p>
                 <textarea
                         class="textarea textarea-small mid-height-quick-help"
