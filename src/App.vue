@@ -248,7 +248,7 @@
 
         <div class="cs1 ce12 grid">
             <div class="cs1 ce9 p-small footer-left">
-                Build with <span class="emoji">❤️</span> in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
+                Build with ❤️ in Hamburg by <a class="muted" href="https://orbitdigital.de" target="_blank">Orbit
                 Ventures</a>
             </div>
             <div class="cs10 ce12 grid p-small footer-right">
