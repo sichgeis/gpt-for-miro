@@ -79,3 +79,7 @@ a:active.muted {
 .scrollable {
   overflow-y: auto;
 }
+
+span.emoji {
+  letter-spacing: 0.5em;
+}
