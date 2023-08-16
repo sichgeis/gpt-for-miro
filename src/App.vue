@@ -355,9 +355,11 @@ const complete = async () => {
     } catch (e) {
         console.log('error', e);
         if (e.toString().includes('401')) {
-            content = 'Authentication error with OpenAI. Have you provided a valid API key for OpenAI in the settings? Access the settings in the footer of the app via the ⚙️ icon.';
+            content = 'OpenAI returned a 401 error. Have you provided a valid API key for OpenAI in the settings? Access the settings in the footer of the app via the ⚙️ icon.';
         } else if (e.toString().includes('404') && modelVersion.value === 'gpt-4') {
-            content = 'You seem to have no access to the OpenAI GPT-4 model. Upgrade your OpenAI subscription to use GPT-4 or switch to GPT-3.5 in the settings. Access the settings in the footer of the app via the ⚙️ icon.';
+            content = 'OpenAI returned a 404 error. You seem to have no access to the OpenAI GPT-4 model. Upgrade your OpenAI subscription to use GPT-4 or switch to GPT-3.5 in the settings. Access the settings in the footer of the app via the ⚙️ icon.';
+        } else if (e.toString().includes('429')) {
+            content = 'OpenAI returned a 429 error. You seem to have exceeded the rate limit for requests to OpenAI. You need to add a payment method to your free account or make a paid account to use the OpenAI API.';
         } else if (e.toString().includes('setRequestHeader')) {
             content = 'Error in communication with OpenAI. Have you provided a valid API key in the settings? Access the settings in the footer of the app via the ⚙️ icon.';
         } else {
