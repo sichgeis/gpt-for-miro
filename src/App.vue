@@ -268,7 +268,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { createCompletion, createNameForSavedInstruction, GptModel, isGpt4Available } from "./openai";
+import { createCompletion, createNameForSavedInstruction, GptModel, isGpt35Available, isGpt4Available } from "./openai";
 import { lang } from "./lang";
 import { addSticky, getCenterOfGravity, getHeight } from "./miro";
 import { StickyNote } from "@mirohq/websdk-types";
@@ -321,6 +321,8 @@ const setOpenaiApiKey = async (e: Event) => {
     localStorage.openaiApiKey = (e.target as HTMLInputElement).value;
     openaiApiKey.value = (e.target as HTMLInputElement).value;
     try {
+        await isGpt35Available(openaiApiKey.value);
+
         if (await isGpt4Available(openaiApiKey.value)) {
             localStorage.gpt4Available = 'true';
             gpt4Available.value = true;
@@ -332,7 +334,11 @@ const setOpenaiApiKey = async (e: Event) => {
             }
         }
     } catch (e) {
-        openaiApiKey.value = '❗️  Invalid OpenAI API Key';
+        if (e.toString().includes('429')) {
+            openaiApiKey.value = '❗️Add payment method to OpenAI account';
+        } else {
+            openaiApiKey.value = '❗️Invalid OpenAI API Key';
+        }
     }
 }
 
