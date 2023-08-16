@@ -353,7 +353,7 @@ const complete = async () => {
     try {
         content = await createCompletion(openaiApiKey.value, currentPrompt, temperature.value, modelVersion.value);
     } catch (e) {
-        console.log('error', e);
+        console.error(e);
         if (e.toString().includes('401')) {
             content = 'OpenAI returned a 401 error. Have you provided a valid API key for OpenAI in the settings? Access the settings in the footer of the app via the ⚙️ icon.';
         } else if (e.toString().includes('404') && modelVersion.value === 'gpt-4') {

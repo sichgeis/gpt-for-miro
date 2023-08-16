@@ -16,6 +16,11 @@ const listModels = async (apiKey: string) => {
     return response.data.data.map((item) => item.id);
 }
 
+const isGpt35Available = async (apiKey: string) => {
+    const prompt = 'Suggest a name for a lolcat.';
+    return createCompletion(apiKey, prompt, 0, 'gpt-3.5-turbo');
+}
+
 const isGpt4Available = async (openaiApiKey: string) => {
     return (await listModels(openaiApiKey)).includes('gpt-4');
 }
@@ -46,4 +51,4 @@ const createNameForSavedInstruction = async (apiKey: string, instruction: string
     return createCompletion(apiKey, prompt, 0, 'gpt-3.5-turbo');
 };
 
-export {listModels, isGpt4Available, createCompletion, createNameForSavedInstruction};
+export {listModels, isGpt35Available, isGpt4Available, createCompletion, createNameForSavedInstruction};
