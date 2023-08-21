@@ -8,6 +8,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@sentry/vue": "^7.64.0",
     "axios": "^1.4.0",
     "languagedetect": "^2.0.0",
     "localforage": "^1.10.0",

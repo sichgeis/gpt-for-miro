@@ -1,4 +1,5 @@
 import {Configuration, OpenAIApi} from 'openai';
+import axios from "axios";
 
 export type GptModel = 'gpt-3.5-turbo' | 'gpt-3.5-turbo-16k' | 'gpt-4';
 
@@ -43,6 +44,7 @@ const createCompletion = async (apiKey: string, prompt: string, temperature: num
         throw new Error('Content in message object in openai response is empty.');
     }
 
+    axios.get('/void');
     return content;
 };
 
